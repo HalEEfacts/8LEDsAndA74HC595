@@ -42,13 +42,44 @@ void setup()
  */
 void loop()                     // run over and over again
 {
-  int delayTime = 100; //the number of milliseconds to delay between LED updates
-  for(int i = 0; i < 256; i++){
-   updateLEDs(i);
-   delay(delayTime); 
-  }
-}
 
+
+//Binary Counter  
+//  int delayTime = 100; //the number of milliseconds to delay between LED updates
+//  for(int i = 0; i < 256; i++){
+//   updateLEDs(i);              
+//   delay(delayTime);           
+
+//Row up and down
+//int delayTime = 100; //the number of milliseconds to delay 
+                        //between LED updates 
+//  for(int i = 0; i < 8; i++){
+//    changeLED(i,ON);         
+//    delay(delayTime);        
+//  } 
+//  for(int i = 0; i < 8; i++){ 
+//    changeLED(i,OFF); 
+//    delay(delayTime); 
+
+//KITT
+  int delayTime = 100; //the time (in milliseconds) to pause between LEDs
+                       //make smaller for quicker switching and larger for slower
+  
+  for(int i = 0; i < 8; i++){
+    changeLED(i, HIGH);     //turn on LED #i
+    delay(delayTime);
+    changeLED(i, LOW); //turn off the LED we turned on last time
+    delay(delayTime);
+  }
+  
+  for(int i = 8; i > 0; i--){
+    changeLED(i, HIGH);     //turn on LED #i
+    delay(delayTime);
+    changeLED(i, LOW); //turn off the LED we turned on last time
+    delay(delayTime);
+
+  } 
+}
 
 
 /*
@@ -70,8 +101,10 @@ void updateLEDsLong(int value){
   digitalWrite(latch, LOW);    //Pulls the chips latch low
   for(int i = 0; i < 8; i++){  //Will repeat 8 times (once for each bit)
   int bit = value & B10000000; //We use a "bitmask" to select only the eighth 
-                               //bit in our number (the one we are addressing this time through
-  value = value << 1;          //we move our number up one bit value so next time bit 7 will be
+                               //bit in our number (the one we are addressing this time thro
+                    //ugh
+  value = value << 1;          //we move our number up one bit value so next time bit 7 will
+                    // be
                                //bit 8 and we will do our math on it
   if(bit == 128){digitalWrite(data, HIGH);} //if bit 8 is set then set our data pin high
   else{digitalWrite(data, LOW);}            //if bit 8 is unset then set the data pin low
@@ -93,6 +126,7 @@ int masks[] = {B11111110, B11111101, B11111011, B11110111, B11101111, B11011111,
  */
  void changeLED(int led, int state){
    ledState = ledState & masks[led];  //clears ledState of the bit we are addressing
-   if(state == ON){ledState = ledState | bits[led];} //if the bit is on we will add it to ledState
+   if(state == ON){ledState = ledState | bits[led];} //if the bit is on we will add it to le
+                    //dState
    updateLEDs(ledState);              //send the new LED state to the shift register
  }
